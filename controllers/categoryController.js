@@ -1,5 +1,6 @@
 const path = require('path');
 const CategoryModel = require('../models/categories.js');
+const paginate = require('../common/paginate');
 const PAGE_SIZE = 4;
 
 const getCategories = async (req, res, next) => {
@@ -16,8 +17,8 @@ const getCategories = async (req, res, next) => {
         if (listCategories.length > 0) {
             res.render(path.join(__dirname, '../views/category.ejs'), {
                 categories: listCategories,
-                page: 1,
-                pages: PAGE_SIZE,
+                page: start,
+                pages: paginate(start, total),
                 totalPage: Math.ceil(parseInt(total) / PAGE_SIZE)
             })
         } else {

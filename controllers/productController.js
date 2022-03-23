@@ -1,5 +1,6 @@
 const ProductModel = require('../models/products');
 const path = require('path');
+const paginate = require('../common/paginate');
 const PAGE_SIZE = 5;
 
 const getAllProducts = async (req, res, next) => {
@@ -35,8 +36,8 @@ const getProductsPageList = async (req, res, next) => {
         if (getProducts.length > 0) {
             res.render(path.join(__dirname, '../views/product.ejs'), {
                 products: getProducts,
-                page: 1,
-                pages: PAGE_SIZE,
+                page: start,
+                pages: paginate(start, total),
                 totalPage: Math.ceil(parseInt(total) / PAGE_SIZE)
             })
         } else {
