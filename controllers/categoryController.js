@@ -14,12 +14,13 @@ const getCategories = async (req, res, next) => {
         let totalCategories = CategoryModel.countDocuments();
         let listCategories = await data;
         let total = await totalCategories;
+        let totalPage = Math.ceil(parseInt(total) / PAGE_SIZE);
         if (listCategories.length > 0) {
             res.render(path.join(__dirname, '../views/category.ejs'), {
                 categories: listCategories,
                 page: start,
-                pages: paginate(start, total),
-                totalPage: Math.ceil(parseInt(total) / PAGE_SIZE)
+                pages: paginate(start, totalPage),
+                totalPage: totalPage
             })
         } else {
             res.json("No catigory data found!");

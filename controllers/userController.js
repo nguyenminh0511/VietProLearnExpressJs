@@ -14,12 +14,13 @@ const getUsers = async (req, res, next) => {
         let totalUser = UserModel.countDocuments();
         let listUsers = await data;
         let total = await totalUser;
+        let totalPage = Math.ceil(parseInt(total) / PAGE_SIZE);
         if (listUsers.length > 0) {
             res.render(path.join(__dirname, '../views/user.ejs'), {
                 users: listUsers,
                 page: start,
-                pages: paginate(start, total),
-                totalPage: Math.ceil(parseInt(total) / PAGE_SIZE)
+                pages: paginate(start, totalPage),
+                totalPage: totalPage
             })
         } else {
             res.json("No user data found!");

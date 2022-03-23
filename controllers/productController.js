@@ -33,12 +33,13 @@ const getProductsPageList = async (req, res, next) => {
         let countDocuments = ProductModel.countDocuments();
         let getProducts = await data;
         let total = await countDocuments;
+        let totalPage = Math.ceil(parseInt(total) / PAGE_SIZE);
         if (getProducts.length > 0) {
             res.render(path.join(__dirname, '../views/product.ejs'), {
                 products: getProducts,
                 page: start,
-                pages: paginate(start, total),
-                totalPage: Math.ceil(parseInt(total) / PAGE_SIZE)
+                pages: paginate(start, totalPage),
+                totalPage: totalPage
             })
         } else {
             res.json("No product data found!");
