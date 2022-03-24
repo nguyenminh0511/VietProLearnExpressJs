@@ -4,7 +4,7 @@ const productSchema = new mongoose.Schema({
     description: String,
     price: Number,
     cat_id: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'categories'
     },
     status: String,
@@ -15,6 +15,8 @@ const productSchema = new mongoose.Schema({
     is_stock: Boolean,
     name: String,
     slug: String
+}, {
+    timestamps: true
 }, {
     collection: 'products'
 })

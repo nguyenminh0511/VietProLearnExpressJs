@@ -8,6 +8,7 @@ const loginRouter = require('./router/login');
 const productRouter = require('./router/products');
 const userRouter = require('./router/users');
 const categoryRouter = require('./router/categories');
+const dashboardRouter = require('./router/dashboard');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -25,6 +26,7 @@ app.use('/login', loginRouter);
 app.use('/products', productRouter);
 app.use('/users', userRouter);
 app.use('/categories', categoryRouter);
+app.use('/dashboard', dashboardRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is listenning at http://localhost:${PORT}`);

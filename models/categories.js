@@ -1,6 +1,6 @@
 const mongoose = require('./index');
 
-const catrgoriesSchema = new mongoose.Schema({
+const categoriesSchema = new mongoose.Schema({
     description: String,
     title: String,
     slug: String
@@ -8,6 +8,6 @@ const catrgoriesSchema = new mongoose.Schema({
     collection: 'categories'
 })
 
-const CategoriesModel = mongoose.model("categories", catrgoriesSchema);
+const CategoriesModel = mongoose.model("categories", categoriesSchema);
 
 module.exports = CategoriesModel;
