@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { getAllProducts, getProductsPageList, editProduct, getAddProduct } = require('../controllers/productController');
+const { getAllProducts, getProductsPageList, editProduct, getAddProduct,
+    postAddProduct } = require('../controllers/productController');
+const { uploadProductImage } = require('../middleware/uploadImage');
 
 router.route('/')
     .get(getProductsPageList)
@@ -10,6 +12,6 @@ router.route('/edit/:id')
 
 router.route('/create')
     .get(getAddProduct)
-    .post()
+    .post(uploadProductImage.single('prd_image'), postAddProduct)
     
 module.exports = router;

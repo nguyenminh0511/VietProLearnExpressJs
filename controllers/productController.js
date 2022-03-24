@@ -84,9 +84,29 @@ const getAddProduct = async (req, res, next) => {
 
 const postAddProduct = async (req, res, next) => {
     try {
-        
+        let data = await ProductModel.create({
+            thumbnail: 'products/' + req.file.originalname,
+            description: req.body.prd_details,
+            price: req.body.prd_price,
+            cat_id: req.body.cat_id,
+            status: req.body.prd_new,
+            featured: req.body.prd_featured,
+            promotion: req.body.prd_promotion,
+            warrantly: req.body.prd_warranty,
+            accessories: req.body.prd_accessories,
+            is_stock: req.body.prd_status,
+            name: req.body.prd_name,
+            slug: "just a test"
+        })
+        if (data) {
+            console.log(data);
+            res.json("Create product successfully!");
+        } else {
+            res.json("Error! Can't create product");
+        }
     } catch(err) {
-
+        console.log(err);
+        res.status(500).json('Server error!');
     }
 }
 
@@ -94,5 +114,6 @@ module.exports = {
     getAllProducts,
     getProductsPageList,
     editProduct,
-    getAddProduct
+    getAddProduct,
+    postAddProduct
 }
