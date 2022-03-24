@@ -1,14 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const { getAllProducts, getProductsPageList, editProduct, getAddProduct,
-    postAddProduct } = require('../controllers/productController');
+const { getAllProducts, getProductsPageList, getEditProduct, getAddProduct,
+    postAddProduct, putEditProduct } = require('../controllers/productController');
 const { uploadProductImage } = require('../middleware/uploadImage');
 
 router.route('/')
     .get(getProductsPageList)
 
-router.route('/edit/:id')
-    .get(editProduct)
+router.route('/edit/:_id')
+    .get(getEditProduct)
+    .put(putEditProduct)
 
 router.route('/create')
     .get(getAddProduct)

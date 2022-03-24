@@ -51,15 +51,15 @@ const getProductsPageList = async (req, res, next) => {
     }
 }
 
-const editProduct = async (req, res, next) => {
+const getEditProduct = async (req, res, next) => {
     try {
-        const productId = req.params.id;
+        const productId = req.params._id;
         let data = ProductModel.findById(productId);
         let categories = CategoryModel.find();
         let productData = await data;
         let categoryData = await categories;
         if (productData) {
-            res.render('../views/edit_product.ejs', {
+            res.render(path.join(__dirname, '../views/edit_product.ejs'), {
                 product: productData,
                 categories: categoryData
             })
@@ -69,6 +69,26 @@ const editProduct = async (req, res, next) => {
     } catch(err) {
         res.status(500).json("Server error!");
     }    
+}
+
+const putEditProduct = async (req, res, next) => {
+    try {
+        const productId = req.params._id;
+        let data = await ProductModel.updateOne({
+            _id: productId
+        }, {
+            name: req.body.name
+        })
+        if (data) {
+            console.log("Update successfully!");
+            res.json(data);
+        } else {
+            resjson("Error! Can't update data");
+        }
+        
+    } catch(err) {
+        res.status(500).json("Server error!");
+    }
 }
 
 const getAddProduct = async (req, res, next) => {
@@ -110,10 +130,20 @@ const postAddProduct = async (req, res, next) => {
     }
 }
 
+const deleteProduct = async (req, res, next) => {
+    try {
+        let id = req.params._id;
+
+    } catch(err) {
+
+    }
+}
+
 module.exports = {
     getAllProducts,
     getProductsPageList,
-    editProduct,
+    getEditProduct,
     getAddProduct,
-    postAddProduct
+    postAddProduct,
+    putEditProduct
 }
