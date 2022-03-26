@@ -69,7 +69,7 @@
                                         <td><%=products[x].cat_id.title%></td>
                                         <td class="form-group">
                                             <a href="/products/edit/<%=products[x]._id%>" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></a>
-                                            <a href="/products/delete/<%=products[x]._id%>" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+                                            <button class="btn btn-danger" onclick="del('<%=products[x]._id%>')" ><i class="glyphicon glyphicon-remove"></i></button>
                                         </td>
                                     </tr>
                                 <%}%>
@@ -97,6 +97,25 @@
 	</div>	<!--/.main-->
 
 	<%- include("./layout/footer")%>
+    <script>
+        function del(linkPath) {
+            $.ajax({
+                url: 'delete/' + linkPath,
+                type: "DELETE"
+            })
+            .then(data => {
+                if (data) {
+                    // console.log(typeof data);
+                    alert("delete product successfully!");
+                } else {
+                    alert("Fail! NOT PERMITTION!");
+                }
+            })
+            .catch(err => {
+                alert("Error! Can't delete product!");
+            })
+        }
+    </script>
 </body>
 
 </html>

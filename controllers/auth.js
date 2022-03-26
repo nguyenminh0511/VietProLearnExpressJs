@@ -1,5 +1,7 @@
 const path = require("path");
 const UserModel = require('../models/users');
+const jwt = require("jsonwebtoken");
+const JWTpass = process.env.JWT_PASS;
 
 const authGetLogin = (req, res, next) => {
     res.render(path.join(__dirname, '../views/login.ejs'), {data: {}});
@@ -21,10 +23,15 @@ const authPostLogin = async (req, res, next) => {
         })
         if (data.length > 0) {
             alert = "Đăng nhập thành công !";
+            let token = jwt.sign({
+                _id: data._id
+            }, JWTpass)
+            res.cookie('token', token, {maxAge: 2 * 1000 * 3600, httpOnly: true});
+            res.redirect('/products');
         } else {
             alert = "Tài khoản không hợp lệ !";
+            res.render(path.join(__dirname, "../views/login"), { data: { alert: alert } });
         }
-        res.render(path.join(__dirname, "../views/login"), { data: { alert: alert } });
     } catch(err) {
         console.log(err);
         res.status(500).json("Server error!");

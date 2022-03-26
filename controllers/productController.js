@@ -79,6 +79,7 @@ const putEditProduct = async (req, res, next) => {
         }, {
             name: req.body.name
         })
+        console.log(req.body.name, req.body.rice);
         if (data) {
             console.log("Update successfully!");
             res.json(data);
@@ -133,9 +134,14 @@ const postAddProduct = async (req, res, next) => {
 const deleteProduct = async (req, res, next) => {
     try {
         let id = req.params._id;
+        await ProductModel.deleteOne({
+            _id: id
+        })
+        res.json("Delete product successfully!");
 
     } catch(err) {
-
+        console.log(err);
+        res.status(500).json("Server error!");
     }
 }
 
@@ -145,5 +151,6 @@ module.exports = {
     getEditProduct,
     getAddProduct,
     postAddProduct,
-    putEditProduct
+    putEditProduct,
+    deleteProduct
 }
