@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <%- include("./layout/head", {title: "Trang chủ quản trị"})%>
+    <%- include("../layout/head", {title: "Trang chủ quản trị"})%>
 
 </head>
 
 <body>
-    <%- include("./layout/header")%>
-    <%- include("./layout/sidebar")%>
+    <%- include("../layout/header")%>
+    <%- include("../layout/sidebar")%>
 		
 		
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
@@ -24,7 +24,7 @@
 			</div>
 		</div><!--/.row-->
 		<div id="toolbar" class="btn-group">
-            <a href="/products/create" class="btn btn-success">
+            <a href="/admin/products/create" class="btn btn-success">
                 <i class="glyphicon glyphicon-plus"></i> Thêm sản phẩm
             </a>
         </div>
@@ -53,7 +53,7 @@
                                         <td style=""><%=x%></td>
                                         <td style=""><%=products[x].name%></td>
                                         <td style=""><%= new Intl.NumberFormat().format(products[x].price)%> VNĐ</td>
-                                        <td style="text-align: center"><img width="130" height="180" src="../public/img/<%=products[x].thumbnail%>" /></td>
+                                        <td style="text-align: center"><img width="130" height="180" src="../../public/img/<%=products[x].thumbnail%>" /></td>
                                        <td>
                                         <%if(products[x].is_stock){%>
                                         <span class="label label-success">còn hàng</span>
@@ -68,7 +68,7 @@
                                         </td>
                                         <td><%=products[x].cat_id.title%></td>
                                         <td class="form-group">
-                                            <a href="/products/edit/<%=products[x]._id%>" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></a>
+                                            <a href="/admin/products/edit/<%=products[x]._id%>" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></a>
                                             <button class="btn btn-danger" onclick="del('<%=products[x]._id%>')" ><i class="glyphicon glyphicon-remove"></i></button>
                                         </td>
                                     </tr>
@@ -80,13 +80,13 @@
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
                                 <%if(page > 1){%>
-                                <li class="page-item"><a class="page-link" href="/products/?page=<%=page-1%>">&laquo;</a></li>
+                                <li class="page-item"><a class="page-link" href="/admin/products/?page=<%=page-1%>">&laquo;</a></li>
                                 <%}%>
                                 <%for(x in pages){%>
-                                <li class="page-item"><a class="page-link" href="/products/?page=<%=pages[x]%>"><%=pages[x]%></a></li>
+                                <li class="page-item"><a class="page-link" href="/admin/products/?page=<%=pages[x]%>"><%=pages[x]%></a></li>
                                  <%}%>       
                                 <%if(page < totalPage){%>
-                                 <li class="page-item"><a class="page-link" href="/products/?page=<%=page+1%>">&raquo;</a></li>
+                                 <li class="page-item"><a class="page-link" href="/admin/products/?page=<%=page+1%>">&raquo;</a></li>
                                 <%}%>
                             </ul>
                         </nav>
@@ -96,7 +96,7 @@
 		</div><!--/.row-->	
 	</div>	<!--/.main-->
 
-	<%- include("./layout/footer")%>
+	<%- include("../layout/footer")%>
     <script>
         function del(linkPath) {
             $.ajax({

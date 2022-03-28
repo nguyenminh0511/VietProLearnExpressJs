@@ -16,7 +16,7 @@ const getCategories = async (req, res, next) => {
         let total = await totalCategories;
         let totalPage = Math.ceil(parseInt(total) / PAGE_SIZE);
         if (listCategories.length > 0) {
-            res.render(path.join(__dirname, '../views/category.ejs'), {
+            res.render(path.join(__dirname, '../views/category/category.ejs'), {
                 categories: listCategories,
                 page: start,
                 pages: paginate(start, totalPage),

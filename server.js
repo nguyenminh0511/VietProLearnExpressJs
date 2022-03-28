@@ -31,10 +31,10 @@ app.get('/', (req, res, next) => {
     res.json("Hello world");
 })
 
-app.use('/products', productRouter);
-app.use('/users', userRouter);
-app.use('/categories', categoryRouter);
-app.use('/dashboard', dashboardRouter);
+app.use('/admin/products', productRouter);
+app.use('/admin/users', userRouter);
+app.use('/admin/categories', categoryRouter);
+app.use('/admin/dashboard', dashboardRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is listenning at http://localhost:${PORT}`);

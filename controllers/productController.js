@@ -8,7 +8,7 @@ const getAllProducts = async (req, res, next) => {
     try {
         let data = await ProductModel.find();
         if (data.length > 0) {
-            res.render(path.join(__dirname, '../views/product.ejs'), 
+            res.render(path.join(__dirname, '../views/products/product.ejs'), 
             {
                 products: data,
                 page:1,
@@ -37,7 +37,7 @@ const getProductsPageList = async (req, res, next) => {
         let total = await countDocuments;
         let totalPage = Math.ceil(parseInt(total) / PAGE_SIZE);
         if (getProducts.length > 0) {
-            res.render(path.join(__dirname, '../views/product.ejs'), {
+            res.render(path.join(__dirname, '../views/products/product.ejs'), {
                 products: getProducts,
                 page: start,
                 pages: paginate(start, totalPage),
@@ -59,7 +59,7 @@ const getEditProduct = async (req, res, next) => {
         let productData = await data;
         let categoryData = await categories;
         if (productData) {
-            res.render(path.join(__dirname, '../views/edit_product.ejs'), {
+            res.render(path.join(__dirname, '../views/products/edit_product.ejs'), {
                 product: productData,
                 categories: categoryData
             })
@@ -95,7 +95,7 @@ const putEditProduct = async (req, res, next) => {
 const getAddProduct = async (req, res, next) => {
     try {
         let categories = await CategoryModel.find();
-        res.render('../views/add_product.ejs', {
+        res.render('../views/products/add_product.ejs', {
             categories: categories
         })
     } catch(err) {

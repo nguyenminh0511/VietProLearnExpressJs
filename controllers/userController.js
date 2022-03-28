@@ -16,7 +16,7 @@ const getUsers = async (req, res, next) => {
         let total = await totalUser;
         let totalPage = Math.ceil(parseInt(total) / PAGE_SIZE);
         if (listUsers.length > 0) {
-            res.render(path.join(__dirname, '../views/user.ejs'), {
+            res.render(path.join(__dirname, '../views/users/user.ejs'), {
                 users: listUsers,
                 page: start,
                 pages: paginate(start, totalPage),
