@@ -10,6 +10,7 @@ const productRouter = require('./router/products');
 const userRouter = require('./router/users');
 const categoryRouter = require('./router/categories');
 const dashboardRouter = require('./router/dashboard');
+const site = require('./router/home');
 
 const { checkLogin } = require('./middleware/checkLogin');
 
@@ -24,12 +25,13 @@ app.set("view engine", "ejs");
 
 app.use('/public', express.static(path.join(__dirname, './public')));
 
-app.use('/login', loginRouter);
+app.use('/admin/login', loginRouter);
 app.use(checkLogin);
 
 app.get('/', (req, res, next) => {
-    res.json("Hello world");
+    res.redirect('/home');
 })
+app.use('/', site);
 
 app.use('/admin/products', productRouter);
 app.use('/admin/users', userRouter);

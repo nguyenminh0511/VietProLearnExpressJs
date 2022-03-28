@@ -8,7 +8,7 @@ const count = async (req, res, next) => {
         let products = ProductModel.countDocuments();
         let countUser = await users;
         let countProduct = await products;
-        res.render(path.join(__dirname, '../views/dashboard.ejs'), {
+        res.render(path.join(__dirname, '../views/admin/dashboard.ejs'), {
             totalUsers: countUser,
             totalProducts: countProduct
         })
