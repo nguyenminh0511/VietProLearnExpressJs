@@ -13,7 +13,11 @@ const productSchema = new mongoose.Schema({
     warrantly: String,
     accessories: String,
     is_stock: Boolean,
-    name: String,
+    name:{
+        type : String,
+        require: true,
+        text : true,
+    },
     slug: String
 }, {
     timestamps: true

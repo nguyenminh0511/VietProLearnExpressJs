@@ -1,6 +1,7 @@
 const path = require("path");
 const ProductModel = require('../models/products');
 const CategoryModel = require('../models/categories');
+const CommentModel = require('../models/comments');
 const paginate = require('../common/paginate');
 const PAGE_SIZE = 9;
 
@@ -66,7 +67,72 @@ const getByCategory = async(req, res, next) => {
     }  
 }
 
+const getProduct = async (req, res, next) => {
+    try {
+        let productId = req.params.id;
+        let product = ProductModel.findOne({ _id: productId });
+        let categories = CategoryModel.find();
+        let comments = CommentModel.find({ prd_id: productId });
+        let productData = await product;
+        let categoryList = await categories;
+        let commentList = await comments;
+
+        res.render(path.join(__dirname, '../views/site/product.ejs'), {
+            product: productData,
+            categories: categoryList,
+            comments: commentList
+        });
+    } catch (err) {
+        res.status(500).error("Server error!");
+    }
+}
+
+const addComment = async (req, res, next) => {
+    try {
+        let prd_id = req.params.id;
+        let name = req.body.full_name;
+        let email = req.body.email;
+        let body = req.body.body;
+
+        await CommentModel.create({
+            prd_id: prd_id,
+            full_name: name,
+            email: email,
+            body: body
+        })
+        res.redirect(req.path);
+    } catch(err) {
+        res.status(500).json("Server error!");
+    }
+}
+
+const searchResult = async (req, res, next) => {
+    try {
+        const keyword = req.query.keyword || "";
+        const filter = {};
+        if (keyword) {
+            filter.$text = {$search: keyword}
+        }
+
+        let products = ProductModel.find(filter);
+        let categories = CategoryModel.find();
+        let productList = await products;
+        let categoryList = await categories;
+
+        res.render(path.join(__dirname, '../views/site/search.ejs'), {
+            products: productList,
+            keyword: keyword,
+            categories: categoryList
+        })
+    } catch (err) {
+        res.status(500).json("Server error");
+    }
+}
+
 module.exports = {
     getHomePage,
-    getByCategory
+    getByCategory,
+    getProduct,
+    addComment,
+    searchResult
 }
