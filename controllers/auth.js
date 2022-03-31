@@ -24,7 +24,7 @@ const authPostLogin = async (req, res, next) => {
         if (data.length > 0) {
             alert = "Đăng nhập thành công !";
             let token = jwt.sign({
-                _id: data._id
+                _id: data[0]._id
             }, JWTpass)
             res.cookie('token', token, {maxAge: 2 * 1000 * 3600, httpOnly: true});
             res.redirect('/home');

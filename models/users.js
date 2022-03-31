@@ -4,7 +4,11 @@ const UserSchema = new mongoose.Schema({
     email: String,
     password: String,
     role: String,
-    full_name: String
+    full_name: String,
+    cart: {
+        type: mongoose.Types.ObjectId,
+        ref: 'carts'
+    }
 }, {
     collection: 'users'
 })

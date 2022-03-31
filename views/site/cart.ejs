@@ -2,12 +2,12 @@
 <html>
 <head>
     <%-include("layout/head", {title: "Giỏ Hàng"})%>
-<link rel="stylesheet" href="/static/site/css/cart.css">
+<link rel="stylesheet" href="./public/site/css/cart.css">
 </head>
 <body>
 
 <!--	Header	-->
-<%-include("layout/header")%>
+<%-include("./layout/header")%>
 <!--	End Header	-->
 
 <!--	Body	-->
@@ -15,7 +15,7 @@
 	<div class="container">
     	<div class="row">
         	<div class="col-lg-12 col-md-12 col-sm-12">
-            	<%-include("layout/menu")%>
+            	<%-include("./layout/menu")%>
             </div>
         </div>
         <div class="row">
@@ -31,75 +31,38 @@
                         <div class="cart-nav-item col-lg-2 col-md-2 col-sm-12">Tùy chọn</div> 
                         <div class="cart-nav-item col-lg-3 col-md-3 col-sm-12">Giá</div>    
                     </div>  
-                    <form method="post">
-                    <div class="cart-item row">
+                    <div>
+                    <% for(let product of products){%>
+                    <% totalPrice += product.price*product.qty%>
+                    <div id='<%=product.id%>' class="cart-item row">
                         <div class="cart-thumb col-lg-7 col-md-7 col-sm-12">
-                        	<img src="images/product-1.png">
-                            <h4>iPhone Xs Max 2 Sim - 256GB Gold</h4>
+                        	<img src="./public/img/<%=product.thumbnail%>">
+                            <h4><%=product.name%></h4>
                         </div> 
                         
                         <div class="cart-quantity col-lg-2 col-md-2 col-sm-12">
-                        	<input type="number" id="quantity" class="form-control form-blue quantity" value="1" min="1">
+                        	<input name="<%=product.id%>" type="number" id="<%=product.id%>-quantity" class="form-control form-blue quantity" value="<%=product.qty%>" min="1">
                         </div> 
-                        <div class="cart-price col-lg-3 col-md-3 col-sm-12"><b>32.990.000đ</b><a href="#">Xóa</a></div>    
+                        <div class="cart-price col-lg-3 col-md-3 col-sm-12"><b><%=new Intl.NumberFormat("vi-VN", {style: "currency", currency: "VND"}).format(product.price)%></b><button onclick="dell_product('<%=product.id%>')">Xóa</button></div>    
                     </div>  
-                    <div class="cart-item row">
-                        <div class="cart-thumb col-lg-7 col-md-7 col-sm-12">
-                        	<img src="images/product-2.png">
-                            <h4>iPhone Xs Max 2 Sim - 256GB Gold</h4>
-                        </div> 
-                        <div class="cart-quantity col-lg-2 col-md-2 col-sm-12">
-                        	<input type="number" id="quantity" class="form-control form-blue quantity" value="1" min="1">
-                        </div> 
-                        <div class="cart-price col-lg-3 col-md-3 col-sm-12"><b>32.990.000đ</b><a href="#">Xóa</a></div>    
-                    </div> 
-                    <div class="cart-item row">
-                        <div class="cart-thumb col-lg-7 col-md-7 col-sm-12">
-                        	<img src="images/product-3.png">
-                            <h4>iPhone Xs Max 2 Sim - 256GB Gold</h4>
-                        </div> 
-                        <div class="cart-quantity col-lg-2 col-md-2 col-sm-12">
-                        	<input type="number" id="quantity" class="form-control form-blue quantity" value="1" min="1">
-                        </div> 
-                        <div class="cart-price col-lg-3 col-md-3 col-sm-12"><b>32.990.000đ</b><a href="#">Xóa</a></div>    
-                    </div>
-                    <div class="cart-item row">
-                        <div class="cart-thumb col-lg-7 col-md-7 col-sm-12">
-                        	<img src="images/product-4.png">
-                            <h4>iPhone Xs Max 2 Sim - 256GB Gold</h4>
-                        </div> 
-                        <div class="cart-quantity col-lg-2 col-md-2 col-sm-12">
-                        	<input type="number" id="quantity" class="form-control form-blue quantity" value="1" min="1">
-                        </div> 
-                        <div class="cart-price col-lg-3 col-md-3 col-sm-12"><b>32.990.000đ</b><a href="#">Xóa</a></div>    
-                    </div>
-                    <div class="cart-item row">
-                        <div class="cart-thumb col-lg-7 col-md-7 col-sm-12">
-                        	<img src="images/product-5.png">
-                            <h4>iPhone Xs Max 2 Sim - 256GB Gold</h4>
-                        </div> 
-                        <div class="cart-quantity col-lg-2 col-md-2 col-sm-12">
-                        	<input type="number" id="quantity" class="form-control form-blue quantity" value="1" min="1">
-                        </div> 
-                        
-                        <div class="cart-price col-lg-3 col-md-3 col-sm-12"><b>32.990.000đ</b><a href="#">Xóa</a></div>    
-                    </div>
+                    <% }%>
+                    
                     
                     <div class="row">
                     	<div class="cart-thumb col-lg-7 col-md-7 col-sm-12">
-                        	<button id="update-cart" class="btn btn-success" type="submit" name="sbm">Cập nhật giỏ hàng</button>	
+                        	<button id="update-cart" class="btn btn-success" onclick="update()">Cập nhật giỏ hàng</button>	
                         </div> 
                         <div class="cart-total col-lg-2 col-md-2 col-sm-12"><b>Tổng cộng:</b></div> 
-                        <div class="cart-price col-lg-3 col-md-3 col-sm-12"><b>88.970.000đ</b></div>
+                        <div class="cart-price col-lg-3 col-md-3 col-sm-12"><b><%=new Intl.NumberFormat("vi-VN", {style: "currency", currency: "VND"}).format(totalPrice)%></b></div>
                     </div>
-                    </form>
-                               
                 </div>
+                               
+                </div> 
                 <!--	End Cart	-->
                 
                 <!--	Customer Info	-->
                 <div id="customer">
-                	<form method="post">
+                	<form method="post" action="/order">
                     <div class="row">
                     	
                     	<div id="customer-name" class="col-lg-4 col-md-4 col-sm-12">
@@ -116,33 +79,71 @@
                         </div>
                         
                     </div>
-                    </form>
+                    
                     <div class="row">
                     	<div class="by-now col-lg-6 col-md-6 col-sm-12">
-                        	<a href="#">
+                        	<button type="submit" class="btn btn-danger">
                             	<b>Mua ngay</b>
                                 <span>Giao hàng tận nơi siêu tốc</span>
-                            </a>
+                            </button>
                         </div>
                         <div class="by-now col-lg-6 col-md-6 col-sm-12">
-                        	<a href="#">
+                        	<button type="button" class="btn btn-primary">
                             	<b>Trả góp Online</b>
                                 <span>Vui lòng call (+84) 0988 550 553</span>
-                            </a>
+                            </button>
                         </div>
                     </div>
+                    </form>
                 </div>
                 <!--	End Customer Info	-->
                 
             </div>
             
-            <%-include("layout/sidebar")%>
+            <%-include("./layout/sidebar")%>
         </div>
     </div>
 </div>
 <!--	End Body	-->
 
-<%-include("layout/footer")%>
+<%-include("./layout/footer")%>
+
+<script>
+    const dell_product = (prdId) => {
+        let id = "#" + prdId + "-quantity";
+        $('#' + prdId).hide();
+        $(id).val(0); 
+        // console.log('button click', id ,$(id).val());
+    }
+
+    var products = JSON.parse('<%-  JSON.stringify(products) %>');
+    // console.log(products);
+    const update = () => {
+        var reqData = []
+        for (let product of products) {
+            let prdId = product._id;
+            reqData.push({
+                id: prdId,
+                number: $("#" + prdId + "-quantity").val()
+            })
+        }
+        // console.log(reqData);
+        $.ajax({
+            url: '/cart',
+            method: 'PUT',
+            data: {
+                products: JSON.stringify({data: reqData}),
+                message: "success"
+            }
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(err => {
+            console.error(err);
+        })
+    }
+</script>
 
 
 
