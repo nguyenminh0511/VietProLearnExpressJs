@@ -1,6 +1,8 @@
 const CartModel = require('../models/cart');
 const CategoryModel = require('../models/categories');
 const path = require("path");
+const nodemailer = require("nodemailer");
+const ejs = require("ejs");
 
 const getCart = async (req, res, next) => {
 
@@ -18,7 +20,6 @@ const getCart = async (req, res, next) => {
         temp.description = "";
         products.push(temp);
     }
-
     res.render(path.join(__dirname, '../views/site/cart.ejs'), {
         categories: categoryList,
         totalPrice: 0,
@@ -89,8 +90,70 @@ const updateCart = async (req, res, next) => {
     }
 }
 
+const order = async (req, res, next) => {
+    try {
+        let shopMail = process.env.EMAIL;
+        let destMail = req.body.mail;
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: shopMail,
+                pass: process.env.PASS
+            }
+        });
+
+        let cart = CartModel.findOne({
+            userId: req.userId
+        }). populate('products.prdId');
+
+        let cartData = await cart;
+
+        let products = [];
+        for (let product of cartData.products) {
+            let temp = product.prdId;
+            temp.qty = product.number;
+            temp.description = "";
+            products.push(temp);
+        }
+
+        const html = await ejs.renderFile(
+            path.join(__dirname, "../views/site/email-order.ejs"),
+            {
+                name: req.body.name,
+                phone: req.body.phone,
+                mail: req.body.mail,
+                add: req.body.add,
+                // url: config.get("app.url"),
+                totalPrice: 0,
+                items: products
+            }
+        );
+
+        await transporter.sendMail({
+            from: shopMail,
+            to: destMail,
+            subject: "VERIFY ORDER",
+            html
+        })
+        
+        res.redirect(req.path);
+    } catch(err) {
+        console.log(err);
+        res.status(500).json("Server error!");
+    }
+}
+
+const success = async (req, res) => {
+    let categories = await CategoryModel.find();
+    res.render(path(__dirname, '../views/site/success.ejs'), {
+        categories: categories
+    });
+}
+
 module.exports = {
     getCart,
     addtoCart,
-    updateCart
+    updateCart,
+    order,
+    success
 }

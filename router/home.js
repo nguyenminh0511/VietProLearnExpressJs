@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { getHomePage, getByCategory, getProduct, addComment, searchResult } = require('../controllers/siteController');
-const { getCart, addtoCart, updateCart } = require('../controllers/cartController');
+const { getCart, addtoCart, updateCart, order, success } = require('../controllers/cartController');
+const { route } = require("express/lib/application");
 
 router.route('/home')
     .get(getHomePage)
@@ -21,4 +22,8 @@ router.route('/cart')
     .post(addtoCart)
     .put(updateCart)
 
-module.exports = router;    
+router.route('/order')
+    .post(order)
+    .get(success)
+
+module.exports = router;
