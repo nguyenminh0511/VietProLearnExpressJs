@@ -33,6 +33,9 @@ app.get('/', (req, res, next) => {
 })
 app.use('/', site);
 
+app.get('/admin', (req, res, next) => {
+    res.redirect('/admin/dashboard');
+})
 app.use('/admin/products', productRouter);
 app.use('/admin/users', userRouter);
 app.use('/admin/categories', categoryRouter);

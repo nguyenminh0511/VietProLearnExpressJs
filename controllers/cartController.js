@@ -144,10 +144,21 @@ const order = async (req, res, next) => {
 }
 
 const success = async (req, res) => {
-    let categories = await CategoryModel.find();
-    res.render(path(__dirname, '../views/site/success.ejs'), {
-        categories: categories
-    });
+    try {
+        let categories = CategoryModel.find();
+        let deleteCart = CartModel.updateMany({ userId: req.userId }, {
+            $set: {
+                products: []
+            }
+        })
+        let categoryList = await categories;
+        let deleteCartResult = await deleteCart;
+        res.render(path.join(__dirname, '../views/site/success.ejs'), {
+            categories: categoryList
+        });
+    } catch(err) {
+        res.status(500).json("Server error!");
+    }
 }
 
 module.exports = {
