@@ -11,6 +11,7 @@ const userRouter = require('./router/users');
 const categoryRouter = require('./router/categories');
 const dashboardRouter = require('./router/dashboard');
 const site = require('./router/home');
+const chatRouter = require('./router/chat');
 
 const { checkLogin } = require('./middleware/checkLogin');
 
@@ -31,6 +32,7 @@ app.use(checkLogin);
 app.get('/', (req, res, next) => {
     res.redirect('/home');
 })
+app.use('/chat', chatRouter);
 app.use('/', site);
 
 app.get('/admin', (req, res, next) => {
