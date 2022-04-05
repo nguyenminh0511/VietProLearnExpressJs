@@ -19,7 +19,7 @@
             <div class="row heading">
               <div class="col-sm-3 col-xs-3 heading-avatar">
                 <div class="heading-avatar-icon">
-                  <!-- <img src="img/avatar1.png" /> -->
+                  <img src="./public/chat/img/avatar1.png" />
                 </div>
               </div>
               <div class="col-sm-1 col-xs-1 heading-dot pull-right">
@@ -55,7 +55,7 @@
 
             <div class="row sideBar">
               <% for(let room of rooms){%>
-              <div class="row sideBar-body">
+              <div class="row sideBar-body" id="room-<%=room._id%>">
                 <div class="col-sm-3 col-xs-3 sideBar-avatar">
                   <div class="avatar-icon">
                     <img src="./public/chat/img/avatar1.png" />
@@ -108,7 +108,7 @@
 
             <div class="row compose-sideBar">
               <% for(let user of users){%>
-              <div class="row sideBar-body">
+              <div class="row sideBar-body" id="user-<%=user._id%>">
                 <div class="col-sm-3 col-xs-3 sideBar-avatar">
                   <div class="avatar-icon">
                     <img src="./public/chat/img/avatar1.png" />
@@ -199,7 +199,29 @@
     <script src="./public/chat/js/bootstrap.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
+      var current_room_id = '<%- rooms[0] ? rooms[0]._id : "" %>';;
+      var current_user_id = '<%= userID %>';
       const socket = io();
+
+      const START_CONVERSATION = "START_CONVERSATION";
+      const START_CONVERSATION_SUCCESS = "START_CONVERSATION_SUCCESS";
+      const roomSideBar = $(".side-one .sideBar");
+      function boot() {
+        $(document).on('click', ".sideBar-body", function(e) {
+          const idStr = $(this).attr("id");
+
+          const [type, id] = idStr.split('-');
+          startConversation({type, id});
+          $('.newMessage-back').click();
+        })
+      }
+      boot();
+
+      function startConversation(data) {
+        socket.emit(START_CONVERSATION, data);
+      }
+
+
     </script>
     <script>
       $(function () {
