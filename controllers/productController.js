@@ -121,7 +121,7 @@ const postAddProduct = async (req, res, next) => {
         })
         if (data) {
             console.log(data);
-            res.json("Create product successfully!");
+            res.redirect('/admin/products');
         } else {
             res.json("Error! Can't create product");
         }
@@ -137,10 +137,9 @@ const deleteProduct = async (req, res, next) => {
         await ProductModel.deleteOne({
             _id: id
         })
-        res.json("Delete product successfully!");
+        res.redirect('/admin/products');
 
     } catch(err) {
-        console.log(err);
         res.status(500).json("Server error!");
     }
 }

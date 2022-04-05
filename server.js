@@ -14,6 +14,7 @@ const site = require('./router/home');
 const chatRouter = require('./router/chat');
 
 const { checkLogin } = require('./middleware/checkLogin');
+const { checkAdmin } = require("./middleware/checkAdmin");
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -26,7 +27,7 @@ app.set("view engine", "ejs");
 
 app.use('/public', express.static(path.join(__dirname, './public')));
 
-app.use('/admin/login', loginRouter);
+app.use('/login', loginRouter);
 app.use(checkLogin);
 
 app.get('/', (req, res, next) => {
@@ -35,6 +36,7 @@ app.get('/', (req, res, next) => {
 app.use('/chat', chatRouter);
 app.use('/', site);
 
+app.use('/admin', checkAdmin);
 app.get('/admin', (req, res, next) => {
     res.redirect('/admin/dashboard');
 })

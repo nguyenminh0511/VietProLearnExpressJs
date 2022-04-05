@@ -10,7 +10,7 @@ const checkLogin = (req, res, next) => {
             next();
         }
     } catch(err) {
-        res.redirect('/admin/login');
+        res.redirect('/login');
     }
 }
 
